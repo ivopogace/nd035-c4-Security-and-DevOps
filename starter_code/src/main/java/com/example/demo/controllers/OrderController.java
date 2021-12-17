@@ -1,7 +1,10 @@
 package com.example.demo.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.example.demo.model.persistence.Item;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.persistence.Cart;
 import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.UserOrder;
-import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.OrderRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
@@ -37,6 +39,7 @@ public class OrderController {
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
 		orderRepository.save(order);
+		log.info(String.format("Order created for User with username %s and items %s, with total price %f.", user.getUsername(), order.getItems().stream().map(Item::getName).collect(Collectors.toList()), order.getTotal()));
 		return ResponseEntity.ok(order);
 	}
 	

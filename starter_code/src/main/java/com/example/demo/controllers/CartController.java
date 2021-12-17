@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,11 @@ import com.example.demo.model.persistence.repositories.ItemRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.ModifyCartRequest;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-	
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -46,6 +49,7 @@ public class CartController {
 		IntStream.range(0, request.getQuantity())
 			.forEach(i -> cart.addItem(item.get()));
 		cartRepository.save(cart);
+		log.info(String.format("Cart created for User with username %s and items %s.", user.getUsername(), user.getCart().getItems().stream().map(Item::getName).collect(Collectors.toList())));
 		return ResponseEntity.ok(cart);
 	}
 	
@@ -63,6 +67,7 @@ public class CartController {
 		IntStream.range(0, request.getQuantity())
 			.forEach(i -> cart.removeItem(item.get()));
 		cartRepository.save(cart);
+		log.info(String.format("User with username %s removed item %s from cart.", user.getUsername(), item.get().getName()));
 		return ResponseEntity.ok(cart);
 	}
 		
