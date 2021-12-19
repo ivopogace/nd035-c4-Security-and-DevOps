@@ -17,8 +17,6 @@ import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.CreateUserRequest;
 
-import javax.persistence.EntityExistsException;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
@@ -66,11 +64,6 @@ public class UserController {
 		userRepository.save(user);
 		log.info("User created with username: "+createUserRequest.getUsername());
 		return ResponseEntity.ok(user);
-	}
-
-	@GetMapping("/test")
-	public String test(){
-		return "War Deployed";
 	}
 	
 }
