@@ -15,9 +15,9 @@ services:
 
   tomcat:
     restart: always
-    image: 'tomcat:8-jdk11-openjdk'
+    image: 'tomcat:9.0.54-jdk11'
     container_name: tomcat
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - /usr/local/docker/tomcat/webapps:/usr/local/tomcat/webapps
