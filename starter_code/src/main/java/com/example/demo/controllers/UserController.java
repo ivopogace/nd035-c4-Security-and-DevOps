@@ -67,5 +67,10 @@ public class UserController {
 		log.info("User created with username: "+createUserRequest.getUsername());
 		return ResponseEntity.ok(user);
 	}
+
+	@GetMapping("/test")
+	public String test(){
+		return "War Deployed";
+	}
 	
 }
