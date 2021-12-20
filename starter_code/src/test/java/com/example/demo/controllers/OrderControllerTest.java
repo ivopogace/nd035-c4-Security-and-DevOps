@@ -9,6 +9,7 @@ import com.example.demo.model.persistence.repositories.OrderRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -45,6 +46,13 @@ public class OrderControllerTest {
         assertEquals(user, userOrder.getUser());
         assertEquals(user.getCart().getItems(), userOrder.getItems());
         assertEquals(user.getCart().getTotal(), userOrder.getTotal());
+    }
+
+    @Test
+    public void testCreateOrderByInvalidUserUsername(){
+        ResponseEntity<UserOrder> response = orderController.submit(newUser().getUsername());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode().value());
+
     }
 
     @Test
