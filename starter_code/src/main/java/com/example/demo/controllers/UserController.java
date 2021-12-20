@@ -44,9 +44,10 @@ public class UserController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest) {
-		if (userRepository.existsByUsername(createUserRequest.getUsername()))
+		if (userRepository.existsByUsername(createUserRequest.getUsername())){
+			log.info("Username {} is already taken. Try to register with another username again.", createUserRequest.getUsername());
 			return ResponseEntity.badRequest().body(String.format("Username %s is already taken. Try to register with another username again.", createUserRequest.getUsername()));
-//			throw new EntityExistsException(String.format("Username %s is already taken. Try again.", createUserRequest.getUsername()));
+		}
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
 		Cart cart = new Cart();
@@ -57,7 +58,8 @@ public class UserController {
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
 			//System.out.println("Error - Either length is less than 7 or pass and conf pass do not match. Unable to create ",
 			//		createUserRequest.getUsername());
-			return ResponseEntity.badRequest().build();
+			log.info("Error - Either length is less than 7 or pass and conf pass do not match. Unable to create " + createUserRequest.getUsername());
+			return ResponseEntity.badRequest().body("Error - Either length is less than 7 or pass and conf pass do not match. Unable to create" + createUserRequest.getUsername());
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 

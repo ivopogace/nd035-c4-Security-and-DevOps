@@ -35,6 +35,11 @@ public class OrderController {
 	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			log.info("Error creating order. User {} doesn't exists", username);
+			return ResponseEntity.notFound().build();
+		}
+		if (user.getCart().getItems().isEmpty()){
+			log.info("Error creating order. User {} doesn't have any items in his cart", username);
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
