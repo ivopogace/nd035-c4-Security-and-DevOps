@@ -72,6 +72,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+<!--				Don't forget to change the packaging to ja for docker-->
+<!--				<version>2.4.2</version>-->
+<!--				<configuration>-->
+<!--					<image>-->
+<!--						<name>udacity/ivo-${project.artifactId}:${project.version}</name>-->
+<!--					</image>-->
+<!--					<pullPolicy>IF_NOT_PRESENT</pullPolicy>-->
+<!--				</configuration>-->
 			</plugin>
 			<plugin>
  		               	<groupId>org.apache.maven.plugins</groupId>
